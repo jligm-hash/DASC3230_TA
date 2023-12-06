@@ -35,21 +35,24 @@ countDfSubset = countDf[varianceArr >= varianceCutoff, ]
 
 countDfSubset = countDf[rownames(countDf) %in% top10$gene, ]
 
+# excludeGeneArr = c('MAP1B', 'TUBA1A')
+# countDfSubset = countDfSubset[!(rownames(countDfSubset) %in% excludeGeneArr), ]
+
 dim(countDfSubset)
-
-write.csv(countDfSubset, file = './GSE67835_rawCount_subset.csv',
-          quote = F, row.names = T)
-
-
 
 # draw the heatmap
 
-countDfSubsetScaled = data.frame(scale(countDfSubset))
+# countDfSubsetScaled = data.frame(scale(countDfSubset))
+
+library(sparrow)
+countDfSubsetScaled = data.frame(scale_rows(countDfSubset))
 countDfSubsetScaled = na.omit(countDfSubsetScaled)
 
 # draw the heatmap
 library(pheatmap)
 pheatmap(countDfSubsetScaled)
+write.csv(countDfSubset, file = './GSE67835_rawCount_subset.csv',
+          quote = F, row.names = T)
 
 
 
